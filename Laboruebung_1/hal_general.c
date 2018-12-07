@@ -8,11 +8,12 @@
 #include "hal_gpio.h"
 #include "hal_ucs.h"
 #include "hal_usbciB1.h"
-
+#include "hal_adc12.h"
 
 //ButtonCom x;
 
 USCIB1_SPICom SPI_Display_var;
+ADC12Com ADC_Sensor;
 
 void HAL_Init()
 {

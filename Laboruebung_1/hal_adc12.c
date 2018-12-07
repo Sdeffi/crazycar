@@ -5,17 +5,20 @@
  *      Author: reibensc17
  */
 #include <msp430.h>
+#include "hal_adc12.h"
+
+extern ADC12Com ADC_Sensor;
 
 void HAL_ADC12_Init(void)
 {
 
     REFCTL0 &= ~REFMSTR; // to adjust reference voltage
-    REFCTL0 |= REFVSEL_4; // 2.5V (generator)
+    REFCTL0 |= REFVSEL_3; // 2.5V (generator)
     REFCTL0 = REFON | REFOUT;
 
     ADC12CTL0 &= ~ADC12ENC; // turn off to do ADC setup
 
-    ADC12CTL0 = ADC12MSC | ADC12REF2 5V | ADC12REFON | ADC12ON | ADC12SHT0_15; //msc: multiple sample and conversation      ;1024 ADC12CLK cycles
+    ADC12CTL0 = ADC12MSC | ADC12REF2_5V | ADC12REFON | ADC12ON | ADC12SHT0_15; //msc: multiple sample and conversation      ;1024 ADC12CLK cycles
 
     //
     // shs: triggering on our own timerB
@@ -31,8 +34,8 @@ void HAL_ADC12_Init(void)
 
 
 
-    ADC12MCTL0 = ADC12SREF 1 | ADC12INCH 0; // end of sequence
-    ADC12MCTL1 = ADC12SREF 1 | ADC12INCH 1;
+    ADC12MCTL0 = ADC12SREF_1 | ADC12INCH_0; // end of sequence
+    ADC12MCTL1 = ADC12SREF_1 | ADC12INCH_1;
     ADC12MCTL2 = ADC12SREF_1 | ADC12INCH_2;
     ADC12MCTL3 = ADC12SREF_1 | ADC12INCH_3 | ADC12EOS;  //eos -> end of sequenz
     // Not enabled, DMA transfer
@@ -41,7 +44,7 @@ void HAL_ADC12_Init(void)
     ADC12CTL0 |= ADC12ENC;  //starting conversation enable
 
 }
-#pragma vector = ADC12 VECTOR // ADC12 IV
+#pragma vector = ADC12_VECTOR // ADC12 IV
 __interrupt void ADC12_ISR(void)
 {
 
@@ -54,11 +57,11 @@ __interrupt void ADC12_ISR(void)
     case 8: //ADC12IFG1
     case 10: //ADC12IFG2
     case 12: //ADC12IFG3
-        ADC Sensor.SensorLeft = ADC12MEM0;
-       _ADC_Sensor.SensorRight = ADC12MEM1;
-       _ADC_Sensor.SensorFront = ADC12MEM2;
-        ADC Sensor.SensorVBat = ADC12MEM3;
-        ADC Sensor.Status.B.ADCrdy = 1;
+       ADC_Sensor.SensorLeft = ADC12MEM0;
+       ADC_Sensor.SensorRight = ADC12MEM1;
+       ADC_Sensor.SensorFront = ADC12MEM2;
+       ADC_Sensor.SensorVBat = ADC12MEM3;
+       ADC_Sensor.Status.B.ADCrdy = 1;
         break;
     case 14: break; //ADC12IFG4
     case 16: break; //ADC12IFG5
