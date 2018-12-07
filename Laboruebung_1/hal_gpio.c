@@ -53,6 +53,7 @@ void HAL_GPIO_Init()
     P6DIR &= ~DISTANCE_LEFT;
     P6DIR &= ~DISTANCE_FRONT;
     P6DIR &= ~VBAT_MEASURE;
+    P6DIR |= DISTANCE_LEFT_EN;
 
     P7DIR = 0xff;
     P7SEL |= XT2IN;
@@ -63,11 +64,6 @@ void HAL_GPIO_Init()
     P8DIR = 0xff;
     P8DIR &= ~UART_RXD_AUX;
     P8DIR &= ~LCD_SPI_MISO;
-    P8SEL |= LCD_SPI_CS;
-    P8SEL |= LCD_SPI_CLK;
-    P8SEL |= LCD_SPI_MOSI;
-    P8SEL |= LCD_SPI_MISO;
-
 
     P9DIR = 0xff;
 
