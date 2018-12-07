@@ -1,12 +1,13 @@
 #include <msp430.h> 
-#include "hal_general.h"
-#include "hal_gpio.h"
-#include "hal_ucs.h"
-#include "hal_timerB0.h"
-#include "hal_timerA1.h"
+#include "HAL/hal_general.h"
+#include "HAL/hal_gpio.h"
+#include "HAL/hal_ucs.h"
+#include "HAL/hal_timerB0.h"
+#include "HAL/hal_timerA1.h"
+#include "HAL/hal_usbciB1.h"
 #include "Driver/driver_general.h"
 #include "Driver/driver_aktorik.h"
-#include "hal_usbciB1.h"
+
 
 /**
  * main.c

@@ -6,8 +6,8 @@
  */
 #include "driver_lcd.h"
 #include <msp430.h>
-#include "hal_usbciB1.h"
-#include "hal_gpio.h"
+#include "HAL/hal_usbciB1.h"
+#include "HAL/hal_gpio.h"
 
 extern USCIB1_SPICom transmit;
 

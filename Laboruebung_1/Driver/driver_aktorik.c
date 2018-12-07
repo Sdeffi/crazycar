@@ -7,7 +7,7 @@
 
 #include <msp430.h>
 #include "driver_aktorik.h"
-#include "hal_timerA1.h"
+#include "HAL/hal_timerA1.h"
 
 
 volatile unsigned impulses = 0;
