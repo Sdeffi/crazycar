@@ -1,1 +1,0 @@
-"./HAL_Wdt.obj" "./driver_lcd.obj" "./hal_adc12.obj" "./hal_general.obj" "./hal_gpio.obj" "./hal_pmm.obj" "./hal_timerA1.obj" "./hal_timerB0.obj" "./hal_ucs.obj" "./hal_usbciB1.obj" "./main.obj" "./Driver/driver_aktorik.obj" "./Driver/driver_general.obj" "../lnk_msp430f5335.cmd" -llibmath.a -llibc.a 
