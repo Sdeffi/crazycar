@@ -10,6 +10,8 @@ CMD_SRCS += \
 
 C_SRCS += \
 ../HAL_Wdt.c \
+../driver_lcd.c \
+../hal_adc12.c \
 ../hal_general.c \
 ../hal_gpio.c \
 ../hal_pmm.c \
@@ -21,6 +23,8 @@ C_SRCS += \
 
 C_DEPS += \
 ./HAL_Wdt.d \
+./driver_lcd.d \
+./hal_adc12.d \
 ./hal_general.d \
 ./hal_gpio.d \
 ./hal_pmm.d \
@@ -32,6 +36,8 @@ C_DEPS += \
 
 OBJS += \
 ./HAL_Wdt.obj \
+./driver_lcd.obj \
+./hal_adc12.obj \
 ./hal_general.obj \
 ./hal_gpio.obj \
 ./hal_pmm.obj \
@@ -43,6 +49,8 @@ OBJS += \
 
 OBJS__QUOTED += \
 "HAL_Wdt.obj" \
+"driver_lcd.obj" \
+"hal_adc12.obj" \
 "hal_general.obj" \
 "hal_gpio.obj" \
 "hal_pmm.obj" \
@@ -54,6 +62,8 @@ OBJS__QUOTED += \
 
 C_DEPS__QUOTED += \
 "HAL_Wdt.d" \
+"driver_lcd.d" \
+"hal_adc12.d" \
 "hal_general.d" \
 "hal_gpio.d" \
 "hal_pmm.d" \
@@ -65,6 +75,8 @@ C_DEPS__QUOTED += \
 
 C_SRCS__QUOTED += \
 "../HAL_Wdt.c" \
+"../driver_lcd.c" \
+"../hal_adc12.c" \
 "../hal_general.c" \
 "../hal_gpio.c" \
 "../hal_pmm.c" \

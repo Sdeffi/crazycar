@@ -11,6 +11,8 @@ GEN_CMDS__FLAG :=
 
 ORDERED_OBJS += \
 "./HAL_Wdt.obj" \
+"./driver_lcd.obj" \
+"./hal_adc12.obj" \
 "./hal_general.obj" \
 "./hal_gpio.obj" \
 "./hal_pmm.obj" \
@@ -167,8 +169,8 @@ Laboruebung_1.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "HAL_Wdt.obj" "hal_general.obj" "hal_gpio.obj" "hal_pmm.obj" "hal_timerA1.obj" "hal_timerB0.obj" "hal_ucs.obj" "hal_usbciB1.obj" "main.obj" "Driver\driver_aktorik.obj" "Driver\driver_general.obj" 
-	-$(RM) "HAL_Wdt.d" "hal_general.d" "hal_gpio.d" "hal_pmm.d" "hal_timerA1.d" "hal_timerB0.d" "hal_ucs.d" "hal_usbciB1.d" "main.d" "Driver\driver_aktorik.d" "Driver\driver_general.d" 
+	-$(RM) "HAL_Wdt.obj" "driver_lcd.obj" "hal_adc12.obj" "hal_general.obj" "hal_gpio.obj" "hal_pmm.obj" "hal_timerA1.obj" "hal_timerB0.obj" "hal_ucs.obj" "hal_usbciB1.obj" "main.obj" "Driver\driver_aktorik.obj" "Driver\driver_general.obj" 
+	-$(RM) "HAL_Wdt.d" "driver_lcd.d" "hal_adc12.d" "hal_general.d" "hal_gpio.d" "hal_pmm.d" "hal_timerA1.d" "hal_timerB0.d" "hal_ucs.d" "hal_usbciB1.d" "main.d" "Driver\driver_aktorik.d" "Driver\driver_general.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

@@ -1,10 +1,10 @@
 ******************************************************************************
                   MSP430 Linker PC v18.1.3                     
 ******************************************************************************
->> Linked Fri Dec  7 18:55:59 2018
+>> Linked Fri Dec  7 20:35:30 2018
 
 OUTPUT FILE NAME:   <Laboruebung_1.out>
-ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 00008000
+ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 00008098
 
 
 MEMORY CONFIGURATION
@@ -18,8 +18,8 @@ MEMORY CONFIGURATION
   INFOC                 00001880   00000080  00000000  00000080  RWIX
   INFOB                 00001900   00000080  00000000  00000080  RWIX
   INFOA                 00001980   00000080  00000000  00000080  RWIX
-  RAM                   00001c00   00004800  000002af  00004551  RWIX
-  FLASH                 00008000   00007f80  00000076  00007f0a  RWIX
+  RAM                   00001c00   00004800  000002ba  00004546  RWIX
+  FLASH                 00008000   00007f80  00000104  00007e7c  RWIX
   INT00                 0000ff80   00000002  00000000  00000002  RWIX
   INT01                 0000ff82   00000002  00000000  00000002  RWIX
   INT02                 0000ff84   00000002  00000000  00000002  RWIX
@@ -84,7 +84,7 @@ MEMORY CONFIGURATION
   INT61                 0000fffa   00000002  00000002  00000000  RWIX
   INT62                 0000fffc   00000002  00000002  00000000  RWIX
   RESET                 0000fffe   00000002  00000002  00000000  RWIX
-  FLASH2                00010000   00038000  000005ee  00037a12  RWIX
+  FLASH2                00010000   00038000  000005e0  00037a20  RWIX
 
 
 SECTION ALLOCATION MAP
@@ -92,30 +92,32 @@ SECTION ALLOCATION MAP
  output                                  attributes/
 section   page    origin      length       input sections
 --------  ----  ----------  ----------   ----------------
-.bss       0    00001c00    0000020d     UNINITIALIZED
+.bss       0    00001c00    00000218     UNINITIALIZED
                   00001c00    0000020d     (.common:SPI_Display_var)
+                  00001e0d    00000001     --HOLE--
+                  00001e0e    0000000a     (.common:ADC_Sensor)
 
-.data      0    00001e0e    00000002     UNINITIALIZED
-                  00001e0e    00000002     driver_aktorik.obj (.data)
+.data      0    00001e18    00000002     UNINITIALIZED
+                  00001e18    00000002     driver_aktorik.obj (.data)
 
 .stack     0    00006360    000000a0     UNINITIALIZED
                   00006360    00000004     rts430x_lc_rd_eabi.lib : boot.c.obj (.stack)
                   00006364    0000009c     --HOLE--
 
 .text:_isr 
-*          0    00008000    0000004e     
-                  00008000    0000001c     rts430x_lc_rd_eabi.lib : boot.c.obj (.text:_isr:_c_int00_noargs)
-                  0000801c    0000000e     hal_usbciB1.obj (.text:_isr:ISR_USCI_B1_VECTOR)
-                  0000802a    0000000c     hal_gpio.obj (.text:_isr:Port_1)
-                  00008036    0000000a     hal_timerB0.obj (.text:_isr:TimerB0)
-                  00008040    00000008     rts430x_lc_rd_eabi.lib : isr_trap.asm.obj (.text:_isr:__TI_ISR_TRAP)
-                  00008048    00000006     hal_timerA1.obj (.text:_isr:TIMER1A0_ISR)
+*          0    00008000    000000dc     
+                  00008000    00000098     hal_adc12.obj (.text:_isr:ADC12_ISR)
+                  00008098    0000001c     rts430x_lc_rd_eabi.lib : boot.c.obj (.text:_isr:_c_int00_noargs)
+                  000080b4    0000000e     hal_usbciB1.obj (.text:_isr:ISR_USCI_B1_VECTOR)
+                  000080c2    0000000c     hal_gpio.obj (.text:_isr:Port_1)
+                  000080ce    00000008     rts430x_lc_rd_eabi.lib : isr_trap.asm.obj (.text:_isr:__TI_ISR_TRAP)
+                  000080d6    00000006     hal_timerA1.obj (.text:_isr:TIMER1A0_ISR)
 
-.cinit     0    0000804e    00000028     
-                  0000804e    0000000c     (__TI_handler_table)
-                  0000805a    00000006     (.cinit..bss.load) [load image, compression = zero_init]
-                  00008060    00000006     (.cinit..data.load) [load image, compression = lzss]
-                  00008066    00000010     (__TI_cinit_table)
+.cinit     0    000080dc    00000028     
+                  000080dc    0000000c     (__TI_handler_table)
+                  000080e8    00000006     (.cinit..bss.load) [load image, compression = zero_init]
+                  000080ee    00000006     (.cinit..data.load) [load image, compression = lzss]
+                  000080f4    00000010     (__TI_cinit_table)
 
 .binit     0    00008000    00000000     
 
@@ -174,7 +176,7 @@ TIMER0_A0
                   0000ffea    00000002     rts430x_lc_rd_eabi.lib : int53.asm.obj (.int53)
 
 ADC12      0    0000ffec    00000002     
-                  0000ffec    00000002     rts430x_lc_rd_eabi.lib : int54.asm.obj (.int54)
+                  0000ffec    00000002     hal_adc12.obj (.int54)
 
 USCI_B0    0    0000ffee    00000002     
                   0000ffee    00000002     rts430x_lc_rd_eabi.lib : int55.asm.obj (.int55)
@@ -191,7 +193,7 @@ TIMER0_B1
 
 TIMER0_B0 
 *          0    0000fff6    00000002     
-                  0000fff6    00000002     hal_timerB0.obj (.int59)
+                  0000fff6    00000002     rts430x_lc_rd_eabi.lib : int59.asm.obj (.int59)
 
 COMP_B     0    0000fff8    00000002     
                   0000fff8    00000002     rts430x_lc_rd_eabi.lib : int60.asm.obj (.int60)
@@ -205,49 +207,50 @@ SYSNMI     0    0000fffc    00000002
 .reset     0    0000fffe    00000002     
                   0000fffe    00000002     rts430x_lc_rd_eabi.lib : boot.c.obj (.reset)
 
-.text      0    00010000    000005ee     
+.text      0    00010000    000005e0     
                   00010000    000000ec     hal_pmm.obj (.text:HAL_PMM_SetVCoreUp)
-                  000100ec    000000d2     hal_gpio.obj (.text:HAL_GPIO_Init)
-                  000101be    000000bc     hal_pmm.obj (.text:HAL_PMM_SetVCoreDown)
-                  0001027a    00000090     driver_aktorik.obj (.text:Driver_ThrottleInit)
-                  0001030a    00000076     rts430x_lc_rd_eabi.lib : copy_decompress_lzss.c.obj (.text:decompress:lzss:__TI_decompress_lzss)
-                  00010380    00000068     hal_pmm.obj (.text:HAL_PMM_SetVCore)
-                  000103e8    00000054     rts430x_lc_rd_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit_hold_wdt:__TI_auto_init_nobinit_nopinit_hold_wdt)
-                  0001043c    0000003e     hal_ucs.obj (.text:HAL_UCS_Init)
-                  0001047a    00000038     hal_timerB0.obj (.text:HAL_TimerB0_Init)
-                  000104b2    00000034     hal_timerA1.obj (.text:HAL_TimerA1_Init)
-                  000104e6    00000024     rts430x_lc_rd_eabi.lib : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset:__TI_zero_init_nomemset)
-                  0001050a    00000020     hal_general.obj (.text:HAL_Init)
-                  0001052a    0000001a     driver_aktorik.obj (.text:Driver_SetSteering)
-                  00010544    0000001a     driver_aktorik.obj (.text:Driver_SetThrottle)
-                  0001055e    0000001a     main.obj (.text:main)
-                  00010578    00000018     rts430x_lc_rd_eabi.lib : mult16_f5hw.asm.obj (.text)
-                  00010590    00000014                            : memcpy.c.obj (.text:memcpy)
-                  000105a4    00000012     hal_pmm.obj (.text:HAL_PMM_Init)
-                  000105b6    00000012     rts430x_lc_rd_eabi.lib : copy_decompress_none.c.obj (.text:decompress:none:__TI_decompress_none)
-                  000105c8    0000000a     driver_general.obj (.text:Driver_Init)
-                  000105d2    00000008     driver_aktorik.obj (.text:Driver_SteeringInit)
-                  000105da    00000008     HAL_Wdt.obj (.text:HAL_Wdt_Init)
-                  000105e2    00000006     rts430x_lc_rd_eabi.lib : exit.c.obj (.text:abort)
-                  000105e8    00000004                            : pre_init.c.obj (.text:_system_pre_init)
-                  000105ec    00000002                            : startup.c.obj (.text:_system_post_cinit)
+                  000100ec    000000c2     hal_gpio.obj (.text:HAL_GPIO_Init)
+                  000101ae    000000bc     hal_pmm.obj (.text:HAL_PMM_SetVCoreDown)
+                  0001026a    00000090     driver_aktorik.obj (.text:Driver_ThrottleInit)
+                  000102fa    00000076     rts430x_lc_rd_eabi.lib : copy_decompress_lzss.c.obj (.text:decompress:lzss:__TI_decompress_lzss)
+                  00010370    00000068     hal_pmm.obj (.text:HAL_PMM_SetVCore)
+                  000103d8    00000054     rts430x_lc_rd_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit_hold_wdt:__TI_auto_init_nobinit_nopinit_hold_wdt)
+                  0001042c    0000003e     hal_ucs.obj (.text:HAL_UCS_Init)
+                  0001046a    0000003a     hal_timerB0.obj (.text:HAL_TimerB0_Init)
+                  000104a4    00000034     hal_timerA1.obj (.text:HAL_TimerA1_Init)
+                  000104d8    00000024     rts430x_lc_rd_eabi.lib : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset:__TI_zero_init_nomemset)
+                  000104fc    00000020     hal_general.obj (.text:HAL_Init)
+                  0001051c    0000001a     driver_aktorik.obj (.text:Driver_SetSteering)
+                  00010536    0000001a     driver_aktorik.obj (.text:Driver_SetThrottle)
+                  00010550    0000001a     main.obj (.text:main)
+                  0001056a    00000018     rts430x_lc_rd_eabi.lib : mult16_f5hw.asm.obj (.text)
+                  00010582    00000014                            : memcpy.c.obj (.text:memcpy)
+                  00010596    00000012     hal_pmm.obj (.text:HAL_PMM_Init)
+                  000105a8    00000012     rts430x_lc_rd_eabi.lib : copy_decompress_none.c.obj (.text:decompress:none:__TI_decompress_none)
+                  000105ba    0000000a     driver_general.obj (.text:Driver_Init)
+                  000105c4    00000008     driver_aktorik.obj (.text:Driver_SteeringInit)
+                  000105cc    00000008     HAL_Wdt.obj (.text:HAL_Wdt_Init)
+                  000105d4    00000006     rts430x_lc_rd_eabi.lib : exit.c.obj (.text:abort)
+                  000105da    00000004                            : pre_init.c.obj (.text:_system_pre_init)
+                  000105de    00000002                            : startup.c.obj (.text:_system_post_cinit)
 
 MODULE SUMMARY
 
        Module                       code   ro data   rw data
        ------                       ----   -------   -------
     .\
-       hal_general.obj              32     0         525    
+       hal_general.obj              32     0         535    
        hal_pmm.obj                  546    0         0      
-       hal_gpio.obj                 222    2         0      
-       hal_timerB0.obj              66     2         0      
+       hal_gpio.obj                 206    2         0      
+       hal_adc12.obj                152    2         0      
        hal_ucs.obj                  62     0         0      
        hal_timerA1.obj              58     2         0      
+       hal_timerB0.obj              58     0         0      
        main.obj                     26     0         0      
        hal_usbciB1.obj              14     2         0      
        HAL_Wdt.obj                  8      0         0      
     +--+----------------------------+------+---------+---------+
-       Total:                       1034   8         525    
+       Total:                       1162   8         535    
                                                             
     .\Driver\
        driver_aktorik.obj           204    0         2      
@@ -278,11 +281,11 @@ MODULE SUMMARY
        int51.asm.obj                0      2         0      
        int52.asm.obj                0      2         0      
        int53.asm.obj                0      2         0      
-       int54.asm.obj                0      2         0      
        int55.asm.obj                0      2         0      
        int56.asm.obj                0      2         0      
        int57.asm.obj                0      2         0      
        int58.asm.obj                0      2         0      
+       int59.asm.obj                0      2         0      
        int60.asm.obj                0      2         0      
        int61.asm.obj                0      2         0      
        int62.asm.obj                0      2         0      
@@ -293,19 +296,19 @@ MODULE SUMMARY
        Stack:                       0      0         160    
        Linker Generated:            0      40        0      
     +--+----------------------------+------+---------+---------+
-       Grand Total:                 1596   90        687    
+       Grand Total:                 1724   90        697    
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 00008066 records: 2, size/record: 8, table size: 16
-	.bss: load addr=0000805a, load size=00000006 bytes, run addr=00001c00, run size=0000020d bytes, compression=zero_init
-	.data: load addr=00008060, load size=00000006 bytes, run addr=00001e0e, run size=00000002 bytes, compression=lzss
+__TI_cinit_table @ 000080f4 records: 2, size/record: 8, table size: 16
+	.bss: load addr=000080e8, load size=00000006 bytes, run addr=00001c00, run size=00000218 bytes, compression=zero_init
+	.data: load addr=000080ee, load size=00000006 bytes, run addr=00001e18, run size=00000002 bytes, compression=lzss
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 0000804e records: 3, size/record: 4, table size: 12
+__TI_handler_table @ 000080dc records: 3, size/record: 4, table size: 12
 	index: 0, handler: __TI_zero_init
 	index: 1, handler: __TI_decompress_lzss
 	index: 2, handler: __TI_decompress_none
@@ -397,6 +400,8 @@ address   name
 00000732  ADC12MEM9                              
 00000733  ADC12MEM9_H                            
 00000732  ADC12MEM9_L                            
+00008000  ADC12_ISR                              
+00001e0e  ADC_Sensor                             
 0000049e  BAKCHCTL                               
 0000049f  BAKCHCTL_H                             
 0000049e  BAKCHCTL_L                             
@@ -417,7 +422,7 @@ address   name
 00000486  BAKMEM3_L                              
 000004be  BCD2BIN                                
 000004bc  BIN2BCD                                
-000105e2  C$$EXIT                                
+000105d4  C$$EXIT                                
 000008c0  CBCTL0                                 
 000008c1  CBCTL0_H                               
 000008c0  CBCTL0_L                               
@@ -524,11 +529,11 @@ address   name
 0000050e  DMAIV                                  
 0000050f  DMAIV_H                                
 0000050e  DMAIV_L                                
-000105c8  Driver_Init                            
-0001052a  Driver_SetSteering                     
-00010544  Driver_SetThrottle                     
-000105d2  Driver_SteeringInit                    
-0001027a  Driver_ThrottleInit                    
+000105ba  Driver_Init                            
+0001051c  Driver_SetSteering                     
+00010536  Driver_SetThrottle                     
+000105c4  Driver_SteeringInit                    
+0001026a  Driver_ThrottleInit                    
 00000140  FCTL1                                  
 00000141  FCTL1_H                                
 00000140  FCTL1_L                                
@@ -539,16 +544,16 @@ address   name
 00000147  FCTL4_H                                
 00000146  FCTL4_L                                
 000100ec  HAL_GPIO_Init                          
-0001050a  HAL_Init                               
-000105a4  HAL_PMM_Init                           
-00010380  HAL_PMM_SetVCore                       
-000101be  HAL_PMM_SetVCoreDown                   
+000104fc  HAL_Init                               
+00010596  HAL_PMM_Init                           
+00010370  HAL_PMM_SetVCore                       
+000101ae  HAL_PMM_SetVCoreDown                   
 00010000  HAL_PMM_SetVCoreUp                     
-000104b2  HAL_TimerA1_Init                       
-0001047a  HAL_TimerB0_Init                       
-0001043c  HAL_UCS_Init                           
-000105da  HAL_Wdt_Init                           
-0000801c  ISR_USCI_B1_VECTOR                     
+000104a4  HAL_TimerA1_Init                       
+0001046a  HAL_TimerB0_Init                       
+0001042c  HAL_UCS_Init                           
+000105cc  HAL_Wdt_Init                           
+000080b4  ISR_USCI_B1_VECTOR                     
 00000900  LDOKEYPID                              
 00000901  LDOKEYPID_H                            
 00000900  LDOKEYPID_L                            
@@ -766,7 +771,7 @@ address   name
 00000904  PUCTL                                  
 00000905  PUCTL_H                                
 00000904  PUCTL_L                                
-0000802a  Port_1                                 
+000080c2  Port_1                                 
 00000158  RCCTL0                                 
 00000159  RCCTL0_H                               
 00000158  RCCTL0_L                               
@@ -932,8 +937,7 @@ address   name
 000003e0  TB0EX0                                 
 000003ee  TB0IV                                  
 000003d0  TB0R                                   
-00008048  TIMER1A0_ISR                           
-00008036  TimerB0                                
+000080d6  TIMER1A0_ISR                           
 000005d0  UCA0ABCTL                              
 000005c6  UCA0BRW                                
 000005c7  UCA0BRW_H                              
@@ -1040,14 +1044,14 @@ address   name
 0000015c  WDTCTL_L                               
 00006400  __STACK_END                            
 000000a0  __STACK_SIZE                           
-00008066  __TI_CINIT_Base                        
-00008076  __TI_CINIT_Limit                       
-0000804e  __TI_Handler_Table_Base                
-0000805a  __TI_Handler_Table_Limit               
-00008040  __TI_ISR_TRAP                          
-000103e8  __TI_auto_init_nobinit_nopinit_hold_wdt
-0001030a  __TI_decompress_lzss                   
-000105b6  __TI_decompress_none                   
+000080f4  __TI_CINIT_Base                        
+00008104  __TI_CINIT_Limit                       
+000080dc  __TI_Handler_Table_Base                
+000080e8  __TI_Handler_Table_Limit               
+000080ce  __TI_ISR_TRAP                          
+000103d8  __TI_auto_init_nobinit_nopinit_hold_wdt
+000102fa  __TI_decompress_lzss                   
+000105a8  __TI_decompress_none                   
 0000ffca  __TI_int37                             
 0000ffcc  __TI_int38                             
 0000ffce  __TI_int39                             
@@ -1075,18 +1079,18 @@ address   name
 ffffffff  __TI_pprof_out_hndl                    
 ffffffff  __TI_prof_data_size                    
 ffffffff  __TI_prof_data_start                   
-000104e6  __TI_zero_init_nomemset                
+000104d8  __TI_zero_init_nomemset                
 ffffffff  __c_args__                             
-00010578  __mspabi_mpyi_f5hw                     
-00008000  _c_int00_noargs                        
+0001056a  __mspabi_mpyi_f5hw                     
+00008098  _c_int00_noargs                        
 0000fffe  _reset_vector                          
 00006360  _stack                                 
-000105ec  _system_post_cinit                     
-000105e8  _system_pre_init                       
-000105e2  abort                                  
-00001e0e  impulses                               
-0001055e  main                                   
-00010590  memcpy                                 
+000105de  _system_post_cinit                     
+000105da  _system_pre_init                       
+000105d4  abort                                  
+00001e18  impulses                               
+00010550  main                                   
+00010582  memcpy                                 
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -1797,19 +1801,20 @@ address   name
 00000908  LDOPWRCTL_L                            
 00000909  LDOPWRCTL_H                            
 00001c00  SPI_Display_var                        
-00001e0e  impulses                               
+00001e0e  ADC_Sensor                             
+00001e18  impulses                               
 00006360  _stack                                 
 00006400  __STACK_END                            
-00008000  _c_int00_noargs                        
-0000801c  ISR_USCI_B1_VECTOR                     
-0000802a  Port_1                                 
-00008036  TimerB0                                
-00008040  __TI_ISR_TRAP                          
-00008048  TIMER1A0_ISR                           
-0000804e  __TI_Handler_Table_Base                
-0000805a  __TI_Handler_Table_Limit               
-00008066  __TI_CINIT_Base                        
-00008076  __TI_CINIT_Limit                       
+00008000  ADC12_ISR                              
+00008098  _c_int00_noargs                        
+000080b4  ISR_USCI_B1_VECTOR                     
+000080c2  Port_1                                 
+000080ce  __TI_ISR_TRAP                          
+000080d6  TIMER1A0_ISR                           
+000080dc  __TI_Handler_Table_Base                
+000080e8  __TI_Handler_Table_Limit               
+000080f4  __TI_CINIT_Base                        
+00008104  __TI_CINIT_Limit                       
 0000ffca  __TI_int37                             
 0000ffcc  __TI_int38                             
 0000ffce  __TI_int39                             
@@ -1837,33 +1842,33 @@ address   name
 0000fffe  _reset_vector                          
 00010000  HAL_PMM_SetVCoreUp                     
 000100ec  HAL_GPIO_Init                          
-000101be  HAL_PMM_SetVCoreDown                   
-0001027a  Driver_ThrottleInit                    
-0001030a  __TI_decompress_lzss                   
-00010380  HAL_PMM_SetVCore                       
-000103e8  __TI_auto_init_nobinit_nopinit_hold_wdt
-0001043c  HAL_UCS_Init                           
-0001047a  HAL_TimerB0_Init                       
-000104b2  HAL_TimerA1_Init                       
-000104e6  __TI_zero_init_nomemset                
-0001050a  HAL_Init                               
-0001052a  Driver_SetSteering                     
-00010544  Driver_SetThrottle                     
-0001055e  main                                   
-00010578  __mspabi_mpyi_f5hw                     
-00010590  memcpy                                 
-000105a4  HAL_PMM_Init                           
-000105b6  __TI_decompress_none                   
-000105c8  Driver_Init                            
-000105d2  Driver_SteeringInit                    
-000105da  HAL_Wdt_Init                           
-000105e2  C$$EXIT                                
-000105e2  abort                                  
-000105e8  _system_pre_init                       
-000105ec  _system_post_cinit                     
+000101ae  HAL_PMM_SetVCoreDown                   
+0001026a  Driver_ThrottleInit                    
+000102fa  __TI_decompress_lzss                   
+00010370  HAL_PMM_SetVCore                       
+000103d8  __TI_auto_init_nobinit_nopinit_hold_wdt
+0001042c  HAL_UCS_Init                           
+0001046a  HAL_TimerB0_Init                       
+000104a4  HAL_TimerA1_Init                       
+000104d8  __TI_zero_init_nomemset                
+000104fc  HAL_Init                               
+0001051c  Driver_SetSteering                     
+00010536  Driver_SetThrottle                     
+00010550  main                                   
+0001056a  __mspabi_mpyi_f5hw                     
+00010582  memcpy                                 
+00010596  HAL_PMM_Init                           
+000105a8  __TI_decompress_none                   
+000105ba  Driver_Init                            
+000105c4  Driver_SteeringInit                    
+000105cc  HAL_Wdt_Init                           
+000105d4  C$$EXIT                                
+000105d4  abort                                  
+000105da  _system_pre_init                       
+000105de  _system_post_cinit                     
 ffffffff  __TI_pprof_out_hndl                    
 ffffffff  __TI_prof_data_size                    
 ffffffff  __TI_prof_data_start                   
 ffffffff  __c_args__                             
 
-[772 symbols]
+[773 symbols]

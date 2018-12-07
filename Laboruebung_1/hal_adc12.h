@@ -24,12 +24,9 @@ typedef struct {
         }B;
     }Status;
 
-    unsigned short ADCBuffer[4];        //Speicherplatz der ADC werte
-
-/*   Oder:
     unsigned short SensorLeft;
     unsigned short SensorRight;
     unsigned short SensorFront;
-    unsigned short VBat;
-*/
+    unsigned short SensorVBat;
+
 }ADC12Com;
