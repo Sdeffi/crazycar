@@ -1,4 +1,4 @@
-#include <msp430.h> 
+#include <msp430.h>
 #include "HAL/hal_general.h"
 #include "HAL/hal_gpio.h"
 #include "HAL/hal_ucs.h"
@@ -25,7 +25,7 @@ void main(void)
 
 	while(1)
 	{
-	    Driver_SetSteering(0);
+	    Driver_SetSteering(-100);
 	    Driver_SetThrottle(50);
 	}
 
