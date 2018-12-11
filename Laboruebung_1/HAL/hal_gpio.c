@@ -8,9 +8,10 @@
 // --- Port 1 ---
 
 #include <msp430.h>
-#include "hal_gpio.h"
+#include "HAL/hal_gpio.h"
+#include "HAL/hal_general.h"
 
-
+extern ButtonCom pushed;
 
 void HAL_GPIO_Init()
 {
@@ -23,6 +24,12 @@ void HAL_GPIO_Init()
 
     P1REN |= START_BUTTON;
     P1REN |= STOP_BUTTON;
+
+    P1IE |= (START_BUTTON + STOP_BUTTON); //Interrupt möglich
+    P1IES |= (START_BUTTON + STOP_BUTTON); // Flankentriggerung auf steigende Flanke
+
+
+
 
     P2DIR = 0xff;
     P2DIR &= ~DEBUG_TXD;
@@ -64,6 +71,7 @@ void HAL_GPIO_Init()
     P8DIR = 0xff;
     P8DIR &= ~UART_RXD_AUX;
     P8DIR &= ~LCD_SPI_MISO;
+    P8DIR |= LCD_BL;
 
     P9DIR = 0xff;
 
@@ -71,24 +79,43 @@ void HAL_GPIO_Init()
 
 // *** Interrupts ***
 
-    P1IE = 0x00;
-    /*
-    P1IE |= START_BUTTON;
-    P1IE |= STOP_BUTTON;
-
-    P1IES |= START_BUTTON;
-    P1IES |= STOP_BUTTON;
-    */
+__enable_interrupt();
 
 
 
 }
 
 #pragma vector=PORT1_VECTOR
+__interrupt void ISR_P1 (void)
+{
+    switch(P1IFG)
+    {
+    case START_BUTTON:
+        LCD_ON;    //LCD ein
+        P1IFG &= ~START_BUTTON;
+        pushed.active = 1;
+        pushed.button = 1;
+        break;
+
+    case STOP_BUTTON:
+         LCD_OFF; //LCD aus
+         P1IFG &= ~STOP_BUTTON;
+         pushed.active = 0;
+         pushed.button = 0;
+         break;
+
+    default:
+        P1IFG = 0x00;
+        break;
+    }
+}
+/*#pragma vector=PORT1_VECTOR
 __interrupt void Port_1(void)
 {
    P1OUT ^= BIT6;                        // Toggle P1.6
    P1IFG &=~BIT3;                        // P1.3 IFG cleared
 
 
-}
+}*/
+
+
