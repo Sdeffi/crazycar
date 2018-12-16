@@ -71,17 +71,13 @@ void HAL_GPIO_Init()
     P8DIR = 0xff;
     P8DIR &= ~UART_RXD_AUX;
     P8DIR &= ~LCD_SPI_MISO;
-    P8DIR |= LCD_BL;
+
+    /* Use SPI block on these pins: */
+    P8SEL |= LCD_SPI_CLK;
+    P8SEL |= LCD_SPI_MOSI;
+    P8SEL |= LCD_SPI_MISO;
 
     P9DIR = 0xff;
-
-
-
-// *** Interrupts ***
-
-__enable_interrupt();
-
-
 
 }
 

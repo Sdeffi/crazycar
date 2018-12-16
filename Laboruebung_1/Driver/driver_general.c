@@ -13,8 +13,13 @@
 void Driver_Init()
 {
     //Driver_SteeringInit();
-   // Driver_ThrottleInit();
+    //Driver_ThrottleInit();
     Driver_LCD_Init();
+
+
+    //Test to set the complete display black:
+    unsigned char CMD = 0xA5;
+    Driver_LCD_WriteCommand(&CMD,1);
 
 }
 

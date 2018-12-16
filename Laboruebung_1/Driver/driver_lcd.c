@@ -30,7 +30,7 @@ void Driver_LCD_WriteCommand(unsigned char *data, unsigned char data_length)
 
 void Driver_LCD_Init()
 {
-   unsigned char reset_cmds[10] = {LCD_RST, LCD_BIAS, ADC_SEL_NORMAL, COMMON_RESERVE, RES_RATIO, ELEC_VOL_MODE, ELEC_VOL_VALUE, POWER_CONT, DISPLAY_ON, 0xA5};
+   unsigned char reset_cmds[9] = {LCD_RST, LCD_BIAS, ADC_SEL_NORMAL, COMMON_RESERVE, RES_RATIO, ELEC_VOL_MODE, ELEC_VOL_VALUE, POWER_CONT, DISPLAY_ON};
 
    LCD_ON;
 
@@ -38,10 +38,8 @@ void Driver_LCD_Init()
    __delay_cycles(500000);
    LCD_RESET_HIGH;
 
-   Driver_LCD_WriteCommand(reset_cmds,10);
+   Driver_LCD_WriteCommand(reset_cmds,9);
    while(transmit.Status.B.TxSuc == 0);
-
-
 }
 
 void Driver_LCD_SetPosition(unsigned char page, unsigned char col)
