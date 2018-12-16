@@ -13,12 +13,12 @@ void HAL_ADC12_Init(void)
 {
 
     REFCTL0 &= ~REFMSTR; // to adjust reference voltage
-    REFCTL0 |= REFVSEL_3; // 2.5V (generator)
-    REFCTL0 = REFON | REFOUT;
+    //REFCTL0 |= REFVSEL_3; // 2.5V (generator)
+    //REFCTL0 = REFON | REFOUT;
 
     ADC12CTL0 &= ~ADC12ENC; // turn off to do ADC setup
 
-    ADC12CTL0 = ADC12MSC | ADC12REF2_5V | ADC12REFON | ADC12ON | ADC12SHT0_15; //msc: multiple sample and conversation      ;1024 ADC12CLK cycles
+    ADC12CTL0 = ADC12SHT0_15 | ADC12MSC | ADC12REF2_5V | ADC12REFON | ADC12ON ; //msc: multiple sample and conversation      ;1024 ADC12CLK cycles
 
     //
     // shs: triggering on our own timerB
@@ -26,7 +26,7 @@ void HAL_ADC12_Init(void)
     // ssel: sm clock
     // conseq: repeat sequence of channels
 
-    ADC12CTL1 = ADC12CSTARTADD_0 | ADC12SHS_2 | ADC12SHP | ADC12DIV_0 | ADC12SSEL_3 | ADC12CONSEQ_3;
+    ADC12CTL1 = ADC12CSTARTADD_0 | ADC12SHS_0 | ADC12SHP | ADC12DIV_0 | ADC12SSEL_3 | ADC12CONSEQ_1;
 
     ADC12CTL2 = ADC12TCOFF | ADC12RES_2 | ADC12SR | ADC12REFBURST; //ref: 12 bit, sr: low sample rate, burst: turn off ref only during sample and conv.
 
@@ -37,9 +37,10 @@ void HAL_ADC12_Init(void)
     ADC12MCTL0 = ADC12SREF_1 | ADC12INCH_0; // end of sequence
     ADC12MCTL1 = ADC12SREF_1 | ADC12INCH_1;
     ADC12MCTL2 = ADC12SREF_1 | ADC12INCH_2;
-    ADC12MCTL3 = ADC12SREF_1 | ADC12INCH_3 | ADC12EOS;  //eos -> end of sequenz
+    ADC12MCTL3 = ADC12SREF_1 | ADC12INCH_3 | ADC12EOS;  //eos -> end of sequence
     // Not enabled, DMA transfer
 
+    ADC12IE = (1 << 3); // Enable interrupt on ADC12IFG3
 
     ADC12CTL0 |= ADC12ENC;  //starting conversation enable
 
@@ -57,8 +58,8 @@ __interrupt void ADC12_ISR(void)
     case 8: //ADC12IFG1
     case 10: //ADC12IFG2
     case 12: //ADC12IFG3
-       ADC_Sensor.SensorLeft = ADC12MEM0;
-       ADC_Sensor.SensorRight = ADC12MEM1;
+       ADC_Sensor.SensorRight = ADC12MEM0;
+       ADC_Sensor.SensorLeft = ADC12MEM1;
        ADC_Sensor.SensorFront = ADC12MEM2;
        ADC_Sensor.SensorVBat = ADC12MEM3;
        ADC_Sensor.Status.B.ADCrdy = 1;

@@ -34,7 +34,7 @@ void HAL_GPIO_Init()
     P2DIR = 0xff;
     P2DIR &= ~DEBUG_TXD;
     P2DIR &= ~AUX_PIN_1;
-    P2DIR &= ~AUX_PIN_2; //Ein neuer Komentar
+    P2DIR &= ~AUX_PIN_2;
     P2DIR &= ~AUX_PIN_3;
     P2DIR &= ~AUX_PIN_4;
     P2DIR &= ~I2C_SDA_MOTION;
