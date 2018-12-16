@@ -8,10 +8,6 @@
 #ifndef DRIVER_DRIVER_GENERAL_H_
 #define DRIVER_DRIVER_GENERAL_H_
 
-
-
-
+void Driver_Init();
 
 #endif /* DRIVER_DRIVER_GENERAL_H_ */
-
-void Driver_Init();

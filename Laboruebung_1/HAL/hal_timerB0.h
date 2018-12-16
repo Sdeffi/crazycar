@@ -14,9 +14,8 @@
 #define HAL_TIMERB0_H_
 
 
-
+void HAL_TimerB0_Init();
 
 
 #endif /* HAL_TIMERB0_H_ */
 
-void HAL_TimerB0_Init();

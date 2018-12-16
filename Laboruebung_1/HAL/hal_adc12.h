@@ -12,8 +12,6 @@ void HAL_ADC12_Init(void);
 
 
 
-#endif /* HAL_ADC12_H_ */
-
 typedef struct {
 
     union{
@@ -30,3 +28,5 @@ typedef struct {
     unsigned short SensorVBat;
 
 }ADC12Com;
+
+#endif /* HAL_ADC12_H_ */

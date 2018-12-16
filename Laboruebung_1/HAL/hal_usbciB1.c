@@ -8,8 +8,10 @@
 #include <msp430.h>
 #include "hal_usbciB1.h"
 #include "hal_gpio.h"
+#include "hal_general.h"
 
 extern USCIB1_SPICom transmit;
+//extern ADC12Com sensor_x;
 
 void HAL_USCIB1_Init(void)
 {
@@ -26,11 +28,14 @@ void HAL_USCIB1_Init(void)
 
     UCB1CTL1 |= UCSSEL_3;  // Source = submaster clk
 
-    UCB1BR0 = 25;   // USCBR = 25 = 2.5 MHz / 100 kHz
+
+    UCB1BR0 = (2500 / CLK_FREQUENZY_KHZ);   // USCBR = 25 = 2.5 MHz / 100 kHz
     UCB1BR1 = 0;
 
 
     UCB1CTL1 &= ~UCSWRST; // software reset disable
+    UCB1IE |= UCRXIE; //Rx interrupt enable
+    transmit.Status.B.TxSuc = 1;
 
 }
 
@@ -39,7 +44,10 @@ void HAL_USCIB1_Transmit(void)
 {
     LCD_CS_LOW;
 
+    transmit.Status.B.TxSuc = 0;
+
     transmit.TxData.cnt = 0;
+    transmit.RxData.len = 0;
 
     UCB1TXBUF = transmit.TxData.Data[transmit.TxData.cnt];
 }
@@ -48,11 +56,21 @@ void HAL_USCIB1_Transmit(void)
 __interrupt void ISR_USCI_B1_VECTOR(void){
     LCD_CS_HIGH;
 
-    if(transmit.TxData.cnt < transmit.TxData.len){
+    transmit.RxData.Data[transmit.RxData.len]= UCB1RXBUF;
+    transmit.RxData.len ++;
+    transmit.TxData.cnt ++;
 
+    if(transmit.TxData.cnt < transmit.TxData.len)
+    {
+        LCD_CS_LOW;
+
+        UCB1TXBUF = transmit.TxData.Data[transmit.TxData.cnt];
 
     }
-
+    else
+    {
+        transmit.Status.B.TxSuc = 1;
+    }
 
 
 

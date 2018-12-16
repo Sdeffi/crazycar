@@ -15,7 +15,7 @@ extern USCIB1_SPICom transmit;
 void Driver_LCD_WriteCommand(unsigned char *data, unsigned char data_length)
 {
     unsigned char i;
-    while(transmit.Status.B.TxSuc ==0);
+    while(transmit.Status.B.TxSuc == 0);
     LCD_COMMAND;
     for(i=0; i<data_length; i++)
     {
@@ -32,9 +32,19 @@ void Driver_LCD_Init()
 {
    unsigned char reset_cmds[10] = {LCD_RST, LCD_BIAS, ADC_SEL_NORMAL, COMMON_RESERVE, RES_RATIO, ELEC_VOL_MODE, ELEC_VOL_VALUE, POWER_CONT, DISPLAY_ON, 0xA5};
 
-    P9OUT &= ~LCD_RESET;
-    __delay_cycles(100000);  //wait
-    P9OUT |= LCD_RESET;
+   LCD_ON;
 
-    Driver_LCD_WriteCommand(reset_cmds,10);
+   LCD_RESET_LOW;
+   __delay_cycles(500000);
+   LCD_RESET_HIGH;
+
+   Driver_LCD_WriteCommand(reset_cmds,10);
+   while(transmit.Status.B.TxSuc == 0);
+
+
+}
+
+void Driver_LCD_SetPosition(unsigned char page, unsigned char col)
+{
+
 }

@@ -4,8 +4,9 @@
  *  Created on: 29.10.2018
  *      Author: reibensc17
  */
+#include <msp430.h>
 
-#define CLK_FREQUENZY 100000
+#define CLK_FREQUENZY_KHZ 100
 
 #ifndef HAL_USBCIB1_H_
 #define HAL_USBCIB1_H_

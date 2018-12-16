@@ -11,11 +11,6 @@
 #define HAL_GPIO_H_
 
 
-
-
-
-#endif /* HAL_GPIO_H_ */
-
 void HAL_GPIO_Init();
 
 #define RPM_SENSOR BIT3 //ein
@@ -78,6 +73,8 @@ void HAL_GPIO_Init();
 
 #define LCD_RESET BIT0 //aus
 #define DISTANCE_RIGHT_EN BIT7 //aus
+#define LCD_RESET_HIGH (P9OUT |= LCD_RESET)
+#define LCD_RESET_LOW (P9OUT &= ~LCD_RESET)
 
 // --- Makros ---
 
@@ -93,5 +90,5 @@ typedef struct {
     unsigned char button;   //Button number
 }ButtonCom;
 
-
+#endif /* HAL_GPIO_H_ */
 

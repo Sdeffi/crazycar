@@ -9,9 +9,7 @@
 #define HAL_WDT_H_
 
 
-
+void HAL_Wdt_Init();
 
 
 #endif /* HAL_WDT_H_ */
-
-void HAL_Wdt_Init();

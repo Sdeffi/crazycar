@@ -8,10 +8,6 @@
 #ifndef HAL_GENERAL_H_
 #define HAL_GENERAL_H_
 
-
-
-
+void HAL_Init();
 
 #endif /* HAL_GENERAL_H_ */
-
-void HAL_Init();

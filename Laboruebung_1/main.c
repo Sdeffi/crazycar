@@ -7,6 +7,7 @@
 #include "HAL/hal_usbciB1.h"
 #include "Driver/driver_general.h"
 #include "Driver/driver_aktorik.h"
+#include "HAL/hal_adc12.h"
 
 
 /**
@@ -14,6 +15,7 @@
  */
 extern ButtonCom pushed;
 extern USCIB1_SPICom transmit;
+extern ADC12Com sensor_x;
 
 
 void main(void)
@@ -23,11 +25,11 @@ void main(void)
 	HAL_Init();
 	Driver_Init();
 
-	/*while(1)
+	while(1)
 	{
-	    Driver_SetSteering(-100);
-	    Driver_SetThrottle(50);
-	}*/
+	    //Driver_SetSteering(-100);
+	    //Driver_SetThrottle(50);
+	}
 
 
 

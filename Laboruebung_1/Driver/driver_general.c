@@ -15,6 +15,7 @@ void Driver_Init()
     //Driver_SteeringInit();
    // Driver_ThrottleInit();
     Driver_LCD_Init();
+
 }
 
 

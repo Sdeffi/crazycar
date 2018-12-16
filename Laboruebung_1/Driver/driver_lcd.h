@@ -16,6 +16,7 @@ void Driver_LCD_Init(void);
 #define LCD_DATA (P8OUT |= (P8OUT|LCD_DATACMD))
 #define LCD_COMMAND (P8OUT |= (P8OUT&~LCD_DATACMD))
 
+
 #define SET_PAGE 0xB0
 #define LAST_PAGE 0xB7
 #define MSB_COL_ADDR 0x10
