@@ -25,14 +25,14 @@ void HAL_USCIB1_Init(void)
     UCB1CTL0 &= ~UCCKPH; // Clock Phase: 0
     UCB1CTL0 &= ~UC7BIT; // 8 bit
 
-    UCB1CTL1 |= UCSSEL_2;  // Source = submaster clk
+    UCB1CTL1 |= UCSSEL__SMCLK;  // Source = submaster clk
     UCB1BR0 = (2500 / CLK_FREQUENZY_KHZ);   // USCBR = 25 = 2.5 MHz / 100 kHz
     UCB1BR1 = 0;
 
     LCD_CS_HIGH;
     UCB1CTL1 &= ~UCSWRST; // software reset disable
-    UCB1IE |= UCRXIE; //Rx interrupt enable
     transmit.Status.B.TxSuc = 1;
+    UCB1IE |= UCRXIE; //Rx interrupt enable
 }
 
 

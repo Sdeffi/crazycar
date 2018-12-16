@@ -13,8 +13,8 @@
 void Driver_LCD_WriteCommand(unsigned char *data, unsigned char data_length);
 void Driver_LCD_Init(void);
 
-#define LCD_DATA (P8OUT |= (P8OUT|LCD_DATACMD))
-#define LCD_COMMAND (P8OUT |= (P8OUT&~LCD_DATACMD))
+#define LCD_DATA (P8OUT |= LCD_DATACMD)
+#define LCD_COMMAND (P8OUT &= ~LCD_DATACMD)
 
 
 #define SET_PAGE 0xB0
