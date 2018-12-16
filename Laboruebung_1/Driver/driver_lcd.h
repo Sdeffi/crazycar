@@ -12,6 +12,11 @@
 
 void Driver_LCD_WriteCommand(unsigned char *data, unsigned char data_length);
 void Driver_LCD_Init(void);
+void Driver_LCD_Clear(void);
+void Driver_LCD_SetPosition(unsigned char page, unsigned char col);
+void Driver_LCD_WriteText(unsigned char* text, unsigned char len, unsigned char page, unsigned char col);
+void Driver_LCD_WriteUInt(unsigned int num, unsigned char page, unsigned char col);
+
 
 #define LCD_DATA (P8OUT |= LCD_DATACMD)
 #define LCD_COMMAND (P8OUT &= ~LCD_DATACMD)

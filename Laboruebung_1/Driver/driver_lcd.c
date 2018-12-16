@@ -5,6 +5,7 @@
  *      Author: reibensc17
  */
 #include "driver_lcd.h"
+#include "font_table.h"
 #include <msp430.h>
 #include "HAL/hal_usbciB1.h"
 #include "HAL/hal_gpio.h"
@@ -23,7 +24,7 @@ void Driver_LCD_WriteCommand(unsigned char *data, unsigned char data_length)
         data++;
     }
     transmit.TxData.len = data_length;
-    transmit.TxData.cnt = 0;
+
     HAL_USCIB1_Transmit();
 }
 
@@ -44,5 +45,82 @@ void Driver_LCD_Init()
 
 void Driver_LCD_SetPosition(unsigned char page, unsigned char col)
 {
+    unsigned char msb_col = col >> 4;
+    unsigned char lsb_col = col & 0x0F;
 
+    unsigned char setpos_cmds[3];
+    setpos_cmds[0] = SET_PAGE | page;
+    setpos_cmds[1] = MSB_COL_ADDR | msb_col;
+    setpos_cmds[2] = LSB_COL_ADDR | lsb_col;
+
+    Driver_LCD_WriteCommand(setpos_cmds, 3);
+    while(transmit.Status.B.TxSuc == 0);
+}
+
+void Driver_LCD_WriteChar(unsigned char writeChar, unsigned char page, unsigned char col)
+{
+    Driver_LCD_SetPosition(page, col);
+
+    LCD_DATA;
+    unsigned char i;
+    for(i=0; i<6; i++)
+    {
+       transmit.TxData.Data[i] = font_table[writeChar][i];
+    }
+    transmit.TxData.len = 6; //Each character consists of 6 subelements in the font_table
+    HAL_USCIB1_Transmit();
+    while(transmit.Status.B.TxSuc == 0);
+}
+
+void Driver_LCD_WriteText(unsigned char* text, unsigned char len, unsigned char page, unsigned char col)
+{
+    unsigned int i;
+    for(i=0; i<len; i++)
+    {
+        Driver_LCD_WriteChar(text[i], page, col+(i*6));
+    }
+}
+
+void Driver_LCD_WriteUInt(unsigned int num, unsigned char page, unsigned char col)
+{
+    unsigned char num_text[4];
+
+    num_text[3] = (num & 0x000F);
+    num_text[2] = (num >>  4) & 0x000F;
+    num_text[1] = (num >>  8) & 0x000F;
+    num_text[0] = (num >> 12) & 0x000F;
+
+    unsigned char i;
+    for(i=0; i<4; i++)
+    {
+        if(num_text[i] < 0xA)
+        {
+            num_text[i] += '0';
+        }
+        else
+        {
+            num_text[i] += 'A' - 0xA;
+        }
+    }
+
+    Driver_LCD_WriteText(num_text,4,page,col);
+}
+
+void Driver_LCD_Clear(void)
+{
+    unsigned char page;
+
+    for(page=0; page<8; page++)
+    {
+        Driver_LCD_SetPosition(page, 0);
+
+        LCD_DATA;
+        unsigned char i;
+        for(i=0; i<128; i++)
+        {
+           transmit.TxData.Data[i] = 0;
+        }
+        transmit.TxData.len = 128; //Each page has 128 columns
+        HAL_USCIB1_Transmit();
+    }
 }

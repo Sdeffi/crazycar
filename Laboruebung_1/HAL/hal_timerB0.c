@@ -8,6 +8,9 @@
 #include <msp430.h>
 #include "hal_gpio.h"
 
+
+unsigned char updateAdcDisplay = 0;
+
 void HAL_TimerB0_Init()
 {
     TB0CTL = 0x00;
@@ -35,6 +38,9 @@ void HAL_TimerB0_Init()
 __interrupt void TimerB0(void)
 {
    ADC12CTL0 |= ADC12SC; // Trigger ADC conversion
+
+   updateAdcDisplay = (updateAdcDisplay + 1) % 60;
+
    TB0CCTL0 &= ~CCIFG;
 
 
