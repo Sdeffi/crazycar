@@ -30,7 +30,7 @@ void HAL_TimerB0_Init()
 
 }
 
-/*
+
 #pragma vector=TIMERB0_VECTOR
 __interrupt void TimerB0(void)
 {
@@ -38,4 +38,4 @@ __interrupt void TimerB0(void)
    TB0CCTL0 &= ~CCIFG;
 
 }
-*/
+

@@ -12,8 +12,8 @@
 /**
  * main.c
  */
-
-extern USCIB1_SPICom SPI_Display_var;
+extern ButtonCom pushed;
+extern USCIB1_SPICom transmit;
 
 
 void main(void)
@@ -23,11 +23,11 @@ void main(void)
 	HAL_Init();
 	Driver_Init();
 
-	while(1)
+	/*while(1)
 	{
 	    Driver_SetSteering(-100);
 	    Driver_SetThrottle(50);
-	}
+	}*/
 
 
 

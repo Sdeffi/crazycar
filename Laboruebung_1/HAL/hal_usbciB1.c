@@ -9,7 +9,7 @@
 #include "hal_usbciB1.h"
 #include "hal_gpio.h"
 
-extern USCIB1_SPICom SPI_Display_var;
+extern USCIB1_SPICom transmit;
 
 void HAL_USCIB1_Init(void)
 {
@@ -39,16 +39,16 @@ void HAL_USCIB1_Transmit(void)
 {
     LCD_CS_LOW;
 
-    SPI_Display_var.TxData.cnt = 0;
+    transmit.TxData.cnt = 0;
 
-    UCB1TXBUF = SPI_Display_var.TxData.Data[SPI_Display_var.TxData.cnt];
+    UCB1TXBUF = transmit.TxData.Data[transmit.TxData.cnt];
 }
 
 #pragma vector= USCI_B1_VECTOR
 __interrupt void ISR_USCI_B1_VECTOR(void){
     LCD_CS_HIGH;
 
-    if(SPI_Display_var.TxData.cnt < SPI_Display_var.TxData.len){
+    if(transmit.TxData.cnt < transmit.TxData.len){
 
 
     }

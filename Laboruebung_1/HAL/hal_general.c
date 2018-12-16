@@ -2,17 +2,20 @@
 #include <msp430.h>
 
 
-#include "hal_general.h"
-#include "hal_pmm.h"
-#include "HAL_Wdt.h"
-#include "hal_gpio.h"
-#include "hal_ucs.h"
-#include "hal_usbciB1.h"
-#include "hal_adc12.h"
+#include "HAL/hal_general.h"
+#include "HAL/hal_pmm.h"
+#include "HAL/HAL_Wdt.h"
+#include "HAL/hal_gpio.h"
+#include "HAL/hal_ucs.h"
+#include "HAL/hal_usbciB1.h"
+#include "HAL/hal_adc12.h"
+#include "HAL/hal_timerB0.h"
+#include "HAL/hal_timerA1.h"
 
-//ButtonCom x;
 
-USCIB1_SPICom SPI_Display_var;
+ButtonCom pushed;
+
+USCIB1_SPICom transmit;
 ADC12Com ADC_Sensor;
 
 void HAL_Init()

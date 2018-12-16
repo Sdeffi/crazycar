@@ -5,11 +5,13 @@
  *      Author: reibensc17
  */
 
-#define LCD_DATA (P8OUT |= (P8OUT|LCD_DATACMD))
-#define LCD_COMMAND (P8OUT |= (P8OUT&~LCD_DATACMD))
+
 
 #ifndef DRIVER_LCD_H_
 #define DRIVER_LCD_H_
+
+void Driver_LCD_WriteCommand(unsigned char *data, unsigned char data_length);
+void Driver_LCD_Init(void);
 
 #define LCD_DATA (P8OUT |= (P8OUT|LCD_DATACMD))
 #define LCD_COMMAND (P8OUT |= (P8OUT&~LCD_DATACMD))
@@ -20,7 +22,6 @@
 #define LSB_COL_ADDR 0x00
 #define NO_PAGES 8
 #define NO_COLUMS 132
-
 
 
 
