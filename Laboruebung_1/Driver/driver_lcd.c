@@ -83,27 +83,19 @@ void Driver_LCD_WriteText(unsigned char* text, unsigned char len, unsigned char 
 
 void Driver_LCD_WriteUInt(unsigned int num, unsigned char page, unsigned char col)
 {
-    unsigned char num_text[4];
 
-    num_text[3] = (num & 0x000F);
-    num_text[2] = (num >>  4) & 0x000F;
-    num_text[1] = (num >>  8) & 0x000F;
-    num_text[0] = (num >> 12) & 0x000F;
+    unsigned char cnt =6;
+    unsigned char num_str[7] = {0};
 
-    unsigned char i;
-    for(i=0; i<4; i++)
+    while(num > 0)
     {
-        if(num_text[i] < 0xA)
-        {
-            num_text[i] += '0';
-        }
-        else
-        {
-            num_text[i] += 'A' - 0xA;
-        }
+        num_str[cnt] = num %10 + '0';
+        num = num/10;
+        cnt --;
     }
 
-    Driver_LCD_WriteText(num_text,4,page,col);
+
+    Driver_LCD_WriteText(num_str,6,page,col);
 }
 
 void Driver_LCD_Clear(void)
