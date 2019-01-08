@@ -40,13 +40,13 @@ void HAL_ADC12_Init(void)
     ADC12MCTL3 = ADC12SREF_1 | ADC12INCH_3 | ADC12EOS;  //eos -> end of sequence
     // Not enabled, DMA transfer
 
-    ADC12IE = (1 << 3); // Enable interrupt on ADC12IFG3
+    //ADC12IE = (1 << 3); // Enable interrupt on ADC12IFG3
 
     ADC12CTL0 |= ADC12ENC;  //starting conversation enable
 
 }
 
-#pragma vector = ADC12_VECTOR // ADC12 IV
+/*#pragma vector = ADC12_VECTOR // ADC12 IV
 __interrupt void ADC12_ISR(void)
 {
 
@@ -83,7 +83,7 @@ __interrupt void ADC12_ISR(void)
 }
 
 
-
+*/
 
 
 

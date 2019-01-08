@@ -22,10 +22,11 @@ typedef struct {
         }B;
     }Status;
 
-    unsigned short SensorLeft;
-    unsigned short SensorRight;
-    unsigned short SensorFront;
-    unsigned short SensorVBat;
+    /* Ordered by the ADC12MEM */
+    unsigned short SensorRight; //ADC12MEM0
+    unsigned short SensorLeft;  //ADC12MEM1
+    unsigned short SensorFront; //ADC12MEM2
+    unsigned short SensorVBat;  //ADC12MEM3
 
 }ADC12Com;
 
