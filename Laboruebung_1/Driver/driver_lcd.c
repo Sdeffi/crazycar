@@ -95,7 +95,7 @@ void Driver_LCD_WriteUInt(unsigned int num, unsigned char page, unsigned char co
     }
 
 
-    Driver_LCD_WriteText(num_str,6,page,col);
+    Driver_LCD_WriteText(num_str,7,page,col);
 }
 
 void Driver_LCD_Clear(void)
