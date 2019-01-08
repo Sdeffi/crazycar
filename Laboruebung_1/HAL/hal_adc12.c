@@ -45,6 +45,7 @@ void HAL_ADC12_Init(void)
     ADC12CTL0 |= ADC12ENC;  //starting conversation enable
 
 }
+
 #pragma vector = ADC12_VECTOR // ADC12 IV
 __interrupt void ADC12_ISR(void)
 {
@@ -79,10 +80,10 @@ __interrupt void ADC12_ISR(void)
     default: break;
     }
 
-
-
-
 }
+
+
+
 
 
 

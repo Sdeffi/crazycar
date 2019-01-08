@@ -28,5 +28,7 @@ void HAL_Init()
     HAL_TimerA1_Init();
     HAL_USCIB1_Init();
     HAL_ADC12_Init();
+    HAL_DMA_Init();
+
     __enable_interrupt();   //am Schluss
 }
