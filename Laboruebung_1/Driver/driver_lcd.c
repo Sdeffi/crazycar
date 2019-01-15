@@ -41,6 +41,8 @@ void Driver_LCD_Init()
 
    Driver_LCD_WriteCommand(reset_cmds,9);
    while(transmit.Status.B.TxSuc == 0);
+   Driver_LCD_Clear();
+   while(transmit.Status.B.TxSuc == 0);
 }
 
 void Driver_LCD_SetPosition(unsigned char page, unsigned char col)

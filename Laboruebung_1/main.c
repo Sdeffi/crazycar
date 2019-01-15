@@ -33,8 +33,8 @@ void main(void)
 
 	while(1)
 	{
-	    //Driver_SetSteering(-100);
-	    //Driver_SetThrottle(50);
+	    Driver_SetSteering(0);
+	    Driver_SetThrottle(0);
 
 
 	    if(updateAdcDisplay == 0)
@@ -42,7 +42,7 @@ void main(void)
 	        updateAdcDisplay++;
 
             /* Print ADc values */
-            Driver_LCD_Clear();
+            //
 
             unsigned char text[10] = "ADC";
             Driver_LCD_WriteText(text, sizeof(text), 0, 0);
