@@ -12,9 +12,10 @@ extern ADC12Com ADC_Sensor;
 void HAL_ADC12_Init(void)
 {
 
-    REFCTL0 &= ~REFMSTR; // to adjust reference voltage
+    //REFCTL0 &= ~REFMSTR; // to adjust reference voltage
     //REFCTL0 |= REFVSEL_3; // 2.5V (generator)
     //REFCTL0 = REFON | REFOUT;
+    REFCTL0 |= REFVSEL1 + REFON + REFOUT;
 
     ADC12CTL0 &= ~ADC12ENC; // turn off to do ADC setup
 
