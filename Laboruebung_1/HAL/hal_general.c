@@ -18,6 +18,7 @@ ButtonCom pushed;
 USCIB1_SPICom transmit;
 ADC12Com ADC_Sensor;
 
+
 void HAL_Init()
 {
     HAL_Wdt_Init();

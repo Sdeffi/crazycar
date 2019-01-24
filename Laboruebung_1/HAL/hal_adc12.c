@@ -7,7 +7,7 @@
 #include <msp430.h>
 #include "hal_adc12.h"
 
-extern ADC12Com ADC_Sensor;
+//extern ADC12Com ADC_Sensor;
 
 void HAL_ADC12_Init(void)
 {
