@@ -11,18 +11,19 @@
 #include "Driver/driver_lcd.h"
 #include "Driver/driver_lookup.h"
 
+#define FULLSPEED_FW 50
+#define MED_SPEED_FW 25
+#define TURN_RIGHT 100
+#define TURN_LEFT -100
 
-/**
- * main.c
- */
 //extern ButtonCom pushed;
 //extern USCIB1_SPICom transmit;
 extern ADC12Com ADC_Sensor;
 
 extern unsigned char updateAdcDisplay;
-extern char distance_left;
-extern char distance_right;
-extern char distance_front;
+char distance_left;
+char distance_right;
+char distance_front;
 
 void main(void)
 {
@@ -37,8 +38,23 @@ void main(void)
 
 	while(1)
 	{
-	    Driver_SetSteering(0);
-	    Driver_SetThrottle(0);
+
+
+
+	   if (distance_front >= 70)
+	    {
+	       Driver_SetSteering(0);
+	       Driver_SetThrottle(15);
+	    }
+	   else if((distance_front <= 70)&& distance_front >=20)
+	   {
+	       Driver_SetThrottle(10);
+	   }
+	   else
+	   {
+	       Driver_SetThrottle(0);
+	   }
+
 
 
 	    if(updateAdcDisplay == 0)
@@ -81,3 +97,15 @@ void main(void)
 
 
 }
+void find_sensor_distance ()
+{
+   char f_index = ADC_Sensor.SensorFront >> 4;
+   char r_index = ADC_Sensor.SensorRight >> 4;
+   char l_index = ADC_Sensor.SensorLeft >> 4;
+
+   distance_front = LOOKUP_DISTANCE_FRONT[f_index];
+   distance_left = LOOKUP_DISTANCE_L[l_index];
+   distance_right = LOOKUP_DISTANCE_R[r_index];
+
+}
+
