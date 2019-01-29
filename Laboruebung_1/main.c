@@ -31,9 +31,10 @@ extern unsigned char updateAdcDisplay;
 char distance_left;
 char distance_right;
 char distance_front;
+
 //char state = STRAIGHT;
 
-extern int go;
+//extern int go;
 
 void main(void)
 {
@@ -45,38 +46,48 @@ void main(void)
 	while (1)
 	{
 
-        if (go == 1)
+        if (pushed.button == 1)
         {
 
 
+                  find_sensor_distance ();
 
-
-                   find_sensor_distance ();
-
-                   if ((distance_front > 100)&&((distance_left < 60 ) || (distance_right < 60)))
+                   /*switch(state)
                    {
-                       Driver_SetSteering(0);  //-100 max left, 100 max right
+                   case STRAIGHT:
+
+                          Driver_SetSteering(0);  //-100 max left, 100 max right
+                          Driver_SetThrottle(10);
+
+
+
+                   break;
+                   }*/
+
+                 if ((distance_front > 100)&&((distance_left < 60 ) || (distance_right < 60))) //geradeaus
+                   {
+                       Driver_SetSteering(-5);  //-100 max left, 100 max right
+                       Driver_SetThrottle(20);
+                   }
+                   else if((distance_front <= 90)&& distance_front >=20) //langsamer fahren wenn abstand gering
+                   {
                        Driver_SetThrottle(10);
                    }
-                   else if((distance_front <= 70)&& distance_front >=20)
+                   else if((distance_right > distance_left)) //Kurve rechts
                    {
-                       Driver_SetThrottle(8);
+                       Driver_SetSteering(70);
+                       Driver_SetThrottle(10);
                    }
-                   else if((distance_right > distance_left))
+                   else if((distance_right < distance_left)) //Kurve links
                    {
-                       Driver_SetSteering(50);
-                       Driver_SetThrottle(8);
-                   }
-                   else if((distance_right < distance_left))
-                   {
-                       Driver_SetSteering(-50);
-                       Driver_SetThrottle(8);
+                       Driver_SetSteering(-70);
+                       Driver_SetThrottle(10);
                    }
 
 
-                  /* if((distance_front > 200) && ((distance_left > 200 ) || (distance_right == 65)))
+                  /*if(((distance_front > 200)||(distance_front<15) )&& ((distance_left > 200 ) || (distance_right == 65)))
                    {
-                       Driver_SetThrottle(-8);
+                       Driver_SetThrottle(-15);
                        if (distance_left > 200)
                        {
                            Driver_SetSteering(-100);
@@ -85,8 +96,6 @@ void main(void)
                        {
                            Driver_SetSteering(100);
                        }
-
-
                    }*/
                    else
                    {
