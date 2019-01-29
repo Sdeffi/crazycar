@@ -12,6 +12,7 @@
 #include "HAL/hal_general.h"
 
 extern ButtonCom pushed;
+int go = 0;
 
 void HAL_GPIO_Init()
 {
@@ -22,11 +23,16 @@ void HAL_GPIO_Init()
     P1DIR &= ~START_BUTTON;
     P1DIR &= ~STOP_BUTTON;
 
-    P1REN |= START_BUTTON;
+    P1REN |= START_BUTTON;      //Pullup/down enable
     P1REN |= STOP_BUTTON;
 
-    P1IE |= (START_BUTTON + STOP_BUTTON); //Interrupt möglich
-    P1IES |= (START_BUTTON + STOP_BUTTON); // Flankentriggerung auf steigende Flanke
+    P1IE |= START_BUTTON;
+    P1IE |= STOP_BUTTON;    //Interrupt möglich
+    P1IES |= START_BUTTON;
+    P1IES |= STOP_BUTTON;// Flankentriggerung auf steigende Flanke
+
+    P1OUT |= START_BUTTON;      //PULL UP
+    P1OUT |= STOP_BUTTON;
 
 
 
@@ -87,16 +93,18 @@ __interrupt void ISR_P1 (void)
     switch(P1IFG)
     {
     case START_BUTTON:
-        LCD_ON;    //LCD ein
+        //LCD_ON;    //LCD ein
+        go = 1; //Startbutton gedrückt, losfahren
         P1IFG &= ~START_BUTTON;
         pushed.active = 1;
         pushed.button = 1;
         break;
 
     case STOP_BUTTON:
-         LCD_OFF; //LCD aus
+          //LCD_OFF; //LCD aus
+         go = 0;    //Stoppbutton gedrückt, stehen bleiben
          P1IFG &= ~STOP_BUTTON;
-         pushed.active = 0;
+         pushed.active = 1;
          pushed.button = 0;
          break;
 

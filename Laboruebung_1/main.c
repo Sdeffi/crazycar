@@ -16,14 +16,24 @@
 #define TURN_RIGHT 100
 #define TURN_LEFT -100
 
-//extern ButtonCom pushed;
-//extern USCIB1_SPICom transmit;
+/*#define TURN_LEFT
+#define TURN_RIGHT
+#define STRAIGHT*/
+
+//enum { STRAIGHT, TURN_LEFT, TURN_RIGHT} ;
+
+extern ButtonCom pushed;
+extern USCIB1_SPICom transmit;
 extern ADC12Com ADC_Sensor;
+
 
 extern unsigned char updateAdcDisplay;
 char distance_left;
 char distance_right;
 char distance_front;
+//char state = STRAIGHT;
+
+extern int go;
 
 void main(void)
 {
@@ -32,70 +42,98 @@ void main(void)
 	HAL_Init();
 	Driver_Init();
 
-
-
-
-
-	while(1)
+	while (1)
 	{
 
-
-
-	   if (distance_front >= 70)
-	    {
-	       Driver_SetSteering(0);
-	       Driver_SetThrottle(15);
-	    }
-	   else if((distance_front <= 70)&& distance_front >=20)
-	   {
-	       Driver_SetThrottle(10);
-	   }
-	   else
-	   {
-	       Driver_SetThrottle(0);
-	   }
+        if (go == 1)
+        {
 
 
 
-	    if(updateAdcDisplay == 0)
-	    {
-	        updateAdcDisplay++;
 
-            /* Print ADc values */
-            //
+                   find_sensor_distance ();
 
-	        unsigned char text[10] = "ADC";
-            Driver_LCD_WriteText(text, sizeof(text), 0, 0);
-
-            unsigned char textBat[3] = "Bat";
-            Driver_LCD_WriteText(textBat, sizeof(textBat), 1, 0);
-
-            unsigned char textFrt[3] = "Frt";
-            Driver_LCD_WriteText(textFrt, sizeof(textFrt), 2, 0);
-
-            unsigned char textRgt[3] = "Rgt";
-            Driver_LCD_WriteText(textRgt, sizeof(textRgt), 3, 0);
-
-            unsigned char textLft[3] = "Lft";
-            Driver_LCD_WriteText(textLft, sizeof(textLft), 4, 0);
-
-            /*Driver_LCD_WriteUInt(ADC_Sensor.SensorVBat, 1, 40);
-            Driver_LCD_WriteUInt(ADC_Sensor.SensorFront, 2, 40);
-            Driver_LCD_WriteUInt(ADC_Sensor.SensorRight, 3, 40);
-            Driver_LCD_WriteUInt(ADC_Sensor.SensorLeft, 4, 40);*/
-
-            find_sensor_distance ();
-
-            Driver_LCD_WriteUInt(ADC_Sensor.SensorVBat, 1, 40);
-            Driver_LCD_WriteUInt(distance_front, 2, 40);
-            Driver_LCD_WriteUInt(distance_right, 3, 40);
-            Driver_LCD_WriteUInt(distance_left, 4, 40);
-	    }
-
-	}
+                   if ((distance_front > 100)&&((distance_left < 60 ) || (distance_right < 60)))
+                   {
+                       Driver_SetSteering(0);  //-100 max left, 100 max right
+                       Driver_SetThrottle(10);
+                   }
+                   else if((distance_front <= 70)&& distance_front >=20)
+                   {
+                       Driver_SetThrottle(8);
+                   }
+                   else if((distance_right > distance_left))
+                   {
+                       Driver_SetSteering(50);
+                       Driver_SetThrottle(8);
+                   }
+                   else if((distance_right < distance_left))
+                   {
+                       Driver_SetSteering(-50);
+                       Driver_SetThrottle(8);
+                   }
 
 
+                  /* if((distance_front > 200) && ((distance_left > 200 ) || (distance_right == 65)))
+                   {
+                       Driver_SetThrottle(-8);
+                       if (distance_left > 200)
+                       {
+                           Driver_SetSteering(-100);
+                       }
+                       else
+                       {
+                           Driver_SetSteering(100);
+                       }
 
+
+                   }*/
+                   else
+                   {
+                       Driver_SetSteering(0);
+                       Driver_SetThrottle(0);
+                   }
+
+                    if(updateAdcDisplay == 0)
+                    {
+                        updateAdcDisplay++;
+
+                        /* Print ADc values */
+                        //
+
+                        unsigned char text[10] = "ADC";
+                        Driver_LCD_WriteText(text, sizeof(text), 0, 0);
+
+                        unsigned char textBat[3] = "Bat";
+                        Driver_LCD_WriteText(textBat, sizeof(textBat), 1, 0);
+
+                        unsigned char textFrt[3] = "Frt";
+                        Driver_LCD_WriteText(textFrt, sizeof(textFrt), 2, 0);
+
+                        unsigned char textRgt[3] = "Rgt";
+                        Driver_LCD_WriteText(textRgt, sizeof(textRgt), 3, 0);
+
+                        unsigned char textLft[3] = "Lft";
+                        Driver_LCD_WriteText(textLft, sizeof(textLft), 4, 0);
+
+                        /*Driver_LCD_WriteUInt(ADC_Sensor.SensorVBat, 1, 40);
+                        Driver_LCD_WriteUInt(ADC_Sensor.SensorFront, 2, 40);
+                        Driver_LCD_WriteUInt(ADC_Sensor.SensorRight, 3, 40);
+                        Driver_LCD_WriteUInt(ADC_Sensor.SensorLeft, 4, 40);*/
+
+
+
+                        Driver_LCD_WriteUInt(ADC_Sensor.SensorVBat, 1, 40);
+                        Driver_LCD_WriteUInt(distance_front, 2, 40);
+                        Driver_LCD_WriteUInt(distance_right, 3, 40);
+                        Driver_LCD_WriteUInt(distance_left, 4, 40);
+                    }
+
+
+
+
+        }
+    }
 }
 void find_sensor_distance ()
 {
@@ -109,3 +147,7 @@ void find_sensor_distance ()
 
 }
 
+/*void change direction()
+{
+
+}*/
