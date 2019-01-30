@@ -77,13 +77,13 @@ void main(void)
 
                          if((distance_right > distance_left)) //korrigieren nach rechts
                            {
-                               Driver_SetSteering(15);
+                               Driver_SetSteering(18);
                                Driver_SetThrottle(13);
                            }
 
                          if((distance_right < distance_left)) //korrigieren nach links
                            {
-                               Driver_SetSteering(-15);
+                               Driver_SetSteering(-18);
                                Driver_SetThrottle(13);
 
 
@@ -122,9 +122,9 @@ void main(void)
                        Driver_SetThrottle(0);
                     }*/
 
+                // ------------- deadlock ---------------
 
-
-                  while(((distance_front <40) )&& ((distance_left < 40 ) || (distance_right < 25)))     //deadlock
+                  while(((distance_front <40) )&& ((distance_left < 40 ) || (distance_right < 25)))    //schräg links oder rechts
                    {
                        Driver_SetThrottle(-18);
                        if (distance_right < 25)
@@ -140,7 +140,21 @@ void main(void)
 
                    }
 
+                  while(distance_left < 30 && distance_right > 50)      //links neben bande
+                  {
+                      Driver_SetSteering(30);
+                      Driver_SetThrottle(20);
 
+                      find_sensor_distance ();
+                  }
+
+                  while(distance_right < 30 && distance_left > 50)      //rechts neben bande
+                  {
+                      Driver_SetSteering(-30);
+                      Driver_SetThrottle(20);
+
+                      find_sensor_distance ();
+                  }
                     if(updateAdcDisplay == 0)
                     {
                         updateAdcDisplay++;
