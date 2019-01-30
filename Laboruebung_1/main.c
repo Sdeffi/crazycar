@@ -15,6 +15,7 @@
 #define MED_SPEED_FW 25
 #define TURN_RIGHT 100
 #define TURN_LEFT -100
+#define SLOW_COUNTER_MAX 6000U
 
 /*#define TURN_LEFT
 #define TURN_RIGHT
@@ -31,6 +32,13 @@ extern unsigned char updateAdcDisplay;
 char distance_left;
 char distance_right;
 char distance_front;
+
+char loopIndex = '0';
+
+void displayLoopIndex(unsigned char LoopIndex)
+{
+    Driver_LCD_WriteText(&LoopIndex, sizeof(LoopIndex), 0, 0);
+}
 
 //char state = STRAIGHT;
 
@@ -73,7 +81,7 @@ void main(void)
                        Driver_SetSteering(0);  //-100 max left, 100 max right
                        Driver_SetThrottle(13);
 
-
+                       displayLoopIndex('G');
 
                          if((distance_right > distance_left)) //korrigieren nach rechts
                            {
@@ -93,8 +101,12 @@ void main(void)
                          find_sensor_distance ();
                    }
 
-                        while((distance_front <= 100)&& distance_front >=20) //langsamer fahren wenn abstand gering
+                        long slow_counter=0;
+                        while(((distance_front <= 100)&& distance_front >=20) &&  //langsamer fahren wenn abstand gering
+                                (slow_counter < SLOW_COUNTER_MAX))                     //aber nicht zu lange
                          {
+
+                            displayLoopIndex('S');
 
                              Driver_SetThrottle(10);
 
@@ -112,6 +124,9 @@ void main(void)
                           }
 
                           find_sensor_distance ();
+                          slow_counter++;
+
+
                         }
 
                         //find_sensor_distance ();
@@ -122,10 +137,32 @@ void main(void)
                        Driver_SetThrottle(0);
                     }*/
 
+
+                  while(distance_left < 30 && distance_right > 50)      //links neben bande
+                  {
+                      displayLoopIndex('L');
+
+                      Driver_SetSteering(30);
+                      Driver_SetThrottle(20);
+
+                      find_sensor_distance ();
+                  }
+
+                  while(distance_right < 30 && distance_left > 50)      //rechts neben bande
+                  {
+                      displayLoopIndex('R');
+
+                      Driver_SetSteering(-30);
+                      Driver_SetThrottle(20);
+
+                      find_sensor_distance ();
+                  }
                 // ------------- deadlock ---------------
 
-                  while(((distance_front <40) )&& ((distance_left < 40 ) || (distance_right < 25)))    //schräg links oder rechts
+                  while( ((distance_front <40) && ((distance_left < 40 ) || (distance_right < 25))) )    //schräg links oder rechts
                    {
+                      displayLoopIndex('D');
+
                        Driver_SetThrottle(-18);
                        if (distance_right < 25)
                        {
@@ -140,21 +177,7 @@ void main(void)
 
                    }
 
-                  while(distance_left < 30 && distance_right > 50)      //links neben bande
-                  {
-                      Driver_SetSteering(30);
-                      Driver_SetThrottle(20);
 
-                      find_sensor_distance ();
-                  }
-
-                  while(distance_right < 30 && distance_left > 50)      //rechts neben bande
-                  {
-                      Driver_SetSteering(-30);
-                      Driver_SetThrottle(20);
-
-                      find_sensor_distance ();
-                  }
                     if(updateAdcDisplay == 0)
                     {
                         updateAdcDisplay++;
