@@ -23,7 +23,7 @@
 //enum { STRAIGHT, TURN_LEFT, TURN_RIGHT} ;
 
 extern ButtonCom pushed;
-//extern USCIB1_SPICom transmit;
+extern USCIB1_SPICom transmit;
 extern ADC12Com ADC_Sensor;
 
 
@@ -31,10 +31,9 @@ extern unsigned char updateAdcDisplay;
 char distance_left;
 char distance_right;
 char distance_front;
-
 //char state = STRAIGHT;
 
-//extern int go;
+extern int go;
 
 void main(void)
 {
@@ -43,103 +42,57 @@ void main(void)
 	HAL_Init();
 	Driver_Init();
 
-
 	while (1)
 	{
 
-
-
-
-        if (pushed.button == 1)
+        if (go == 1)
         {
 
 
-                  find_sensor_distance ();
-
-                   /*switch(state)
-                   {
-                   case STRAIGHT:
-
-                          Driver_SetSteering(0);  //-100 max left, 100 max right
-                          Driver_SetThrottle(10);
 
 
+                   find_sensor_distance ();
 
-                   break;
-                   }*/
-
-                while ((distance_front > 100)&&((distance_left < 70 ) || (distance_right < 70))) //geradeaus
+                   if ((distance_front > 100)&&((distance_left < 60 ) || (distance_right < 60)))
                    {
                        Driver_SetSteering(0);  //-100 max left, 100 max right
-                       Driver_SetThrottle(13);
-
-
-
-                         if((distance_right > distance_left)) //korrigieren nach rechts
-                           {
-                               Driver_SetSteering(15);
-                               Driver_SetThrottle(13);
-                           }
-
-                         if((distance_right < distance_left)) //korrigieren nach links
-                           {
-                               Driver_SetSteering(-15);
-                               Driver_SetThrottle(13);
-
-
-
-                         }
-
-                         find_sensor_distance ();
+                       Driver_SetThrottle(10);
+                   }
+                   else if((distance_front <= 70)&& distance_front >=20)
+                   {
+                       Driver_SetThrottle(8);
+                   }
+                   else if((distance_right > distance_left))
+                   {
+                       Driver_SetSteering(50);
+                       Driver_SetThrottle(8);
+                   }
+                   else if((distance_right < distance_left))
+                   {
+                       Driver_SetSteering(-50);
+                       Driver_SetThrottle(8);
                    }
 
-                        while((distance_front <= 100)&& distance_front >=20) //langsamer fahren wenn abstand gering
-                         {
 
-                             Driver_SetThrottle(10);
-
-                             if((distance_right > distance_left)) //kurve rechts
-                           {
-                               Driver_SetSteering(100);
-
-                           }
-
-
-                          if((distance_right < distance_left)) //kurve links
-                          {
-                             Driver_SetSteering(-100);
-
-                          }
-
-                          find_sensor_distance ();
-                        }
-
-                        //find_sensor_distance ();
-
-                    /*else
-                    {
-                       Driver_SetSteering(0);
-                       Driver_SetThrottle(0);
-                    }*/
-
-
-
-                  while(((distance_front <40) )&& ((distance_left < 40 ) || (distance_right < 25)))     //deadlock
+                  /* if((distance_front > 200) && ((distance_left > 200 ) || (distance_right == 65)))
                    {
-                       Driver_SetThrottle(-18);
-                       if (distance_right < 25)
-                       {
-                           Driver_SetSteering(100);
-                       }
-                       else
+                       Driver_SetThrottle(-8);
+                       if (distance_left > 200)
                        {
                            Driver_SetSteering(-100);
                        }
+                       else
+                       {
+                           Driver_SetSteering(100);
+                       }
 
-                       find_sensor_distance ();
 
+                   }*/
+                   else
+                   {
+                       Driver_SetSteering(0);
+                       Driver_SetThrottle(0);
                    }
-
 
                     if(updateAdcDisplay == 0)
                     {
@@ -168,13 +121,12 @@ void main(void)
                         Driver_LCD_WriteUInt(ADC_Sensor.SensorRight, 3, 40);
                         Driver_LCD_WriteUInt(ADC_Sensor.SensorLeft, 4, 40);*/
 
+
+
                         Driver_LCD_WriteUInt(ADC_Sensor.SensorVBat, 1, 40);
                         Driver_LCD_WriteUInt(distance_front, 2, 40);
                         Driver_LCD_WriteUInt(distance_right, 3, 40);
                         Driver_LCD_WriteUInt(distance_left, 4, 40);
-
-                        find_sensor_distance ();
-
                     }
 
 
